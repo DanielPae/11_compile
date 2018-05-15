@@ -54,9 +54,9 @@ void my_main() {
   int i;
   struct matrix *tmp;
   struct stack *systems;
-  screen t;
+  screen s;
   zbuffer zb;
-  color g;
+  color c;
   double step_3d = 20;
   double theta;
 
@@ -98,11 +98,11 @@ void my_main() {
 
   systems = new_stack();
   tmp = new_matrix(4, 1000);
-  clear_screen( t );
+  clear_screen( s );
   clear_zbuffer(zb);
-  g.red = 0;
-  g.green = 0;
-  g.blue = 0;
+  c.red = 0;
+  c.green = 0;
+  c.blue = 0;
 
   int q = 0;
   for(; q < lastop; q++){
@@ -127,9 +127,9 @@ void my_main() {
     
     else if(op[q].opcode == SPHERE){
       add_sphere(tmp,
-		 op[q].op.sphere.d0[0],
-		 op[q].op.sphere.d0[1],
-		 op[q].op.sphere.d0[2],
+		 op[q].op.sphere.d[0],
+		 op[q].op.sphere.d[1],
+		 op[q].op.sphere.d[2],
 		 op[q].op.sphere.r,
 		 step_3d);
       matrix_mult(peek(systems), tmp);
@@ -140,11 +140,11 @@ void my_main() {
 
     else if(op[q].opcode == TORUS){
       add_torus(tmp,
-		op[q].op.torus.d0[0],
-		op[q].op.torus.d0[1],
-		op[q].op.torus.d0[2],
+		op[q].op.torus.d[0],
+		op[q].op.torus.d[1],
+		op[q].op.torus.d[2],
 		op[q].op.torus.r0,
-		op[q].op.torus.r0,
+		op[q].op.torus.r1,
 		step_3d);
       matrix_mult(peek(systems), tmp);
       draw_polygons(tmp, s, zb,
@@ -163,5 +163,6 @@ void my_main() {
       matrix_mult(peek(systems), tmp);
       draw_lines(tmp, s, zb, c);
       tmp->lastcol = 0;
+    }
   }
 }
