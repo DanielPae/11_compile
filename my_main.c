@@ -164,5 +164,48 @@ void my_main() {
       draw_lines(tmp, s, zb, c);
       tmp->lastcol = 0;
     }
+
+    else if(op[q].opcode == MOVE){
+      tmp = make_translate(
+			   op[q].op.move.d[0],
+			   op[q].op.move.d[1],
+			   op[q].op.move.d[2]);
+      matrix_mult(peek(systems), tmp);
+      copy_matrix(tmp, peek(systems));
+      tmp->lastcol = 0;
+    }
+
+    else if(op[q].opcode == SCALE){
+      tmp = make_scale(
+		       op[q].op.scale.d[0],
+		       op[q].op.scale.d[1],
+		       op[q].op.scale.d[2]);
+      matrix_mult(peek(systems), tmp);
+      copy_matrix(tmp, peek(systems));
+      tmp->lastcol = 0;
+    }
+
+    else if(op[q].opcode == ROTATE){
+      if(op[q].op.rotate.axis == 0){
+	tmp = make_rotX(op[q].op.rotate.degrees);
+      }
+      else if(op[q].op.rotate.axis == 1){
+	tmp = make_rotY(op[q].op.rotate.degrees);
+      }
+      else if(op[q].op.rotate.axis == 2){
+	tmp = make_rotZ(op[q].op.rotate.degrees);
+      }
+      matrix_mult(peek(systems), tmp);
+      copy_matrix(tmp, peek(systems));
+      tmp->lastcol = 0;
+    }
+
+    else if(op[q].opcode == DISPLAY){
+      display(s);
+    }
+    
+    else if(op[q].opcode == SAVE){
+      save_extension(s, "tmp");
+    }
   }
 }
